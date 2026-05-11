@@ -52,6 +52,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:8080",
   "https://sajhachulovercel.vercel.app",
+  "https://sajhachulovercel-git-main-your-username.vercel.app", // Example if you have preview deploys
 ];
 
 if (process.env.FRONTEND_URL) {
