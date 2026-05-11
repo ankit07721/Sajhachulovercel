@@ -75,7 +75,7 @@ function PhotoUpload({
       <div className="w-24 h-24 rounded-full border-4 border-primary overflow-hidden bg-orange-100 flex items-center justify-center">
         {photoSrc ? (
           <img
-            src={`http://localhost:5000${photoSrc}`}
+            src={`https://sajhachulovercel.onrender.com${photoSrc}`}
             alt={chefName}
             className="w-full h-full object-cover"
           />
@@ -239,7 +239,8 @@ const ChefDashboard = () => {
   });
 
   const { mutate: toggleAvailability, isPending: isToggling } = useMutation({
-    mutationFn: (isAvailable: boolean) => api.put("/chef/availability", { isAvailable }),
+    mutationFn: (isAvailable: boolean) =>
+      api.put("/chef/availability", { isAvailable }),
     onSuccess: () => {
       toast.success("Availability updated!");
       queryClient.invalidateQueries({ queryKey: ["chefDashboard"] });
@@ -319,14 +320,20 @@ const ChefDashboard = () => {
                 <Badge className="bg-green-100 text-green-700 border-green-200">
                   ✅ Approved Chef
                 </Badge>
-                
-                <Button 
+
+                <Button
                   onClick={() => toggleAvailability(!isAvailable)}
                   disabled={isToggling}
                   variant={isAvailable ? "default" : "outline"}
                   className={`h-8 text-xs gap-1.5 ${isAvailable ? "bg-green-600 hover:bg-green-700" : "text-red-600 border-red-200 hover:bg-red-50"}`}
                 >
-                  {isToggling ? <Loader2 className="h-3 w-3 animate-spin" /> : <div className={`w-2 h-2 rounded-full ${isAvailable ? "bg-white" : "bg-red-600"} animate-pulse`} />}
+                  {isToggling ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <div
+                      className={`w-2 h-2 rounded-full ${isAvailable ? "bg-white" : "bg-red-600"} animate-pulse`}
+                    />
+                  )}
                   {isAvailable ? "Online" : "Offline"}
                 </Button>
               </div>
@@ -435,7 +442,10 @@ const ChefDashboard = () => {
                 color: "bg-green-50",
                 iconColor: "text-green-500",
                 label: "Sub Requests",
-                sub: subRequests?.length > 0 ? `${subRequests.length} pending` : "No requests",
+                sub:
+                  subRequests?.length > 0
+                    ? `${subRequests.length} pending`
+                    : "No requests",
               },
             ].map((action) => (
               <Link to={action.to} key={action.label}>
@@ -460,14 +470,22 @@ const ChefDashboard = () => {
 
           {/* ── Subscription Requests (NEW) ── */}
           {subRequests && subRequests.length > 0 && (
-            <div id="sub-requests" className="mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
+            <div
+              id="sub-requests"
+              className="mb-8 animate-in fade-in slide-in-from-top-4 duration-500"
+            >
               <h2 className="text-xl font-black mb-4 flex items-center gap-2">
-                <Badge className="bg-primary text-white">{subRequests.length}</Badge>
+                <Badge className="bg-primary text-white">
+                  {subRequests.length}
+                </Badge>
                 New Subscription Requests
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {subRequests.map((req: any) => (
-                  <Card key={req._id} className="border-2 border-primary/20 shadow-lg">
+                  <Card
+                    key={req._id}
+                    className="border-2 border-primary/20 shadow-lg"
+                  >
                     <CardContent className="p-5">
                       <div className="flex justify-between items-start mb-4">
                         <div className="flex gap-3">
@@ -475,32 +493,58 @@ const ChefDashboard = () => {
                             {req.user?.firstName?.charAt(0)}
                           </div>
                           <div>
-                            <p className="font-bold">{req.user?.firstName} {req.user?.lastName}</p>
-                            <p className="text-xs text-muted-foreground">{req.planName}</p>
+                            <p className="font-bold">
+                              {req.user?.firstName} {req.user?.lastName}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {req.planName}
+                            </p>
                           </div>
                         </div>
-                        <Badge variant="outline" className="text-primary border-primary">Pending Review</Badge>
+                        <Badge
+                          variant="outline"
+                          className="text-primary border-primary"
+                        >
+                          Pending Review
+                        </Badge>
                       </div>
-                      
+
                       <div className="bg-muted/50 rounded-lg p-3 space-y-2 mb-4 text-xs">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Address:</span>
-                          <span className="font-semibold">{req.deliveryAddress?.street}</span>
+                          <span className="text-muted-foreground">
+                            Address:
+                          </span>
+                          <span className="font-semibold">
+                            {req.deliveryAddress?.street}
+                          </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Meal Time:</span>
-                          <span className="font-semibold capitalize">{req.preferences?.mealTime}</span>
+                          <span className="text-muted-foreground">
+                            Meal Time:
+                          </span>
+                          <span className="font-semibold capitalize">
+                            {req.preferences?.mealTime}
+                          </span>
                         </div>
                       </div>
 
                       <div className="flex gap-2">
-                        <Button className="flex-1 gradient-primary text-xs" 
+                        <Button
+                          className="flex-1 gradient-primary text-xs"
                           onClick={() => approveSub(req._id)}
-                          disabled={isApproving}>
-                          {isApproving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : <CheckCircle className="h-3 w-3 mr-1" />}
+                          disabled={isApproving}
+                        >
+                          {isApproving ? (
+                            <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                          ) : (
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                          )}
                           Approve Request
                         </Button>
-                        <Button variant="outline" className="flex-1 text-xs text-red-600 hover:bg-red-50 border-red-100">
+                        <Button
+                          variant="outline"
+                          className="flex-1 text-xs text-red-600 hover:bg-red-50 border-red-100"
+                        >
                           <X className="h-3 w-3 mr-1" />
                           Decline
                         </Button>
